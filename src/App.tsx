@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useMemo, useState, useEffect } from 'react';
 import { BrowserRouter, useParams } from 'react-router-dom';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { ToastContainer } from 'react-toastify';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -12,30 +11,28 @@ import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 
 function App() {
-	const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
+	const [darkMode, setDarkMode] = useState(true);
 	// const router = useParams();
 	const [isLoginPage, setIsLoginPage] = useState(true);
 	const theme = useMemo(
 		() =>
 			createTheme({
 				palette: {
-					type: prefersDarkMode ? 'dark' : 'light',
+					type: darkMode ? 'dark' : 'light',
 				},
 			}),
-		[prefersDarkMode]
+		[darkMode]
 	);
 	return (
-		<ThemeProvider theme={theme}>
-			<BrowserRouter>
-				<AuthProvider>
-					<Routes />
-					<CssBaseline />
-					{/* {!isLoginPage && <Header />} */}
-					{/* <Header /> */}
-					<ToastContainer />
-				</AuthProvider>
-			</BrowserRouter>
-		</ThemeProvider>
+		<AuthProvider darkMode={darkMode} setDarkMode={setDarkMode}>
+			<ThemeProvider theme={theme}>
+				<Routes />
+				<CssBaseline />
+				{/* {!isLoginPage && <Header />} */}
+				{/* <Header /> */}
+				<ToastContainer />
+			</ThemeProvider>
+		</AuthProvider>
 	);
 }
 

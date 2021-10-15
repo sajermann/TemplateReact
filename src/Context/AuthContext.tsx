@@ -6,9 +6,11 @@ type authContextType = {
 	user: boolean;
 	authentication: boolean;
 	authorization: boolean;
+	darkMode: boolean;
 	login: () => void;
 	login2: () => void;
 	logout: () => void;
+	setDarkMode: (data: boolean) => void;
 };
 
 const authContextDefaultValues: authContextType = {
@@ -18,6 +20,8 @@ const authContextDefaultValues: authContextType = {
 	login: () => {},
 	login2: () => {},
 	logout: () => {},
+	setDarkMode: () => {},
+	darkMode: true,
 };
 
 const AuthContext = createContext<authContextType>(authContextDefaultValues);
@@ -28,9 +32,10 @@ export function useAuth() {
 
 type Props = {
 	children: ReactNode;
+	darkMode: boolean;
+	setDarkMode: (data: boolean) => void;
 };
-
-export function AuthProvider({ children }: Props) {
+export function AuthProvider({ children, darkMode, setDarkMode }: Props) {
 	const history = useHistory();
 	const [user, setUser] = useState<boolean>(false);
 	const [authentication, setAuthentication] = useState<boolean>(false);
@@ -62,6 +67,8 @@ export function AuthProvider({ children }: Props) {
 		login,
 		login2,
 		logout,
+		darkMode,
+		setDarkMode,
 	};
 
 	return (
